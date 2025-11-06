@@ -1,0 +1,32 @@
+# number_of_locations
+5
+
+# locations (one per line)
+A
+B
+C
+D
+E
+
+# number_of_connections
+5
+
+# each connection: LOCATION1 LOCATION2 DISTANCE
+A B 2
+A D 4
+B C 3
+B E 1
+C E 5
+
+# travel_costs_per_location
+A 4
+B 6
+C 3
+D 6
+E 2
+F 5
+G 5
+H 6
+
+# travel_energy_budget
+15

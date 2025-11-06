@@ -1,0 +1,40 @@
+# number_of_locations
+8
+
+# locations
+Arden
+Bram
+Crest
+Dunwall
+Eldham
+Farrow
+Glen
+Holloway
+
+# number_of_connections
+10
+
+# connections
+Arden Bram 3
+Arden Crest 5
+Bram Dunwall 2
+Crest Dunwall 4
+Crest Eldham 6
+Dunwall Farrow 3
+Eldham Farrow 2
+Farrow Glen 4
+Glen Holloway 5
+Eldham Holloway 7
+
+# travel_costs_per_location
+Arden 4
+Bram 6
+Crest 3
+Dunwall 7
+Eldham 2
+Farrow 5
+Glen 8
+Holloway 6
+
+# travel_energy_budget
+15

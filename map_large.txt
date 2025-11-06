@@ -1,0 +1,64 @@
+# number_of_locations
+15
+
+# locations
+Arden
+Bram
+Crest
+Dunwall
+Eldham
+Farrow
+Glen
+Holloway
+Ironford
+Judah
+Kestrel
+Larkspur
+Mornwell
+Northwick
+Oakshade
+
+# number_of_connections
+20
+
+# connections (LOCATION1 LOCATION2 DISTANCE)
+Arden Bram 3
+Arden Crest 5
+Bram Dunwall 2
+Crest Dunwall 4
+Crest Eldham 6
+Dunwall Farrow 3
+Eldham Farrow 2
+Farrow Glen 4
+Glen Holloway 5
+Eldham Holloway 7
+Holloway Ironford 3
+Ironford Judah 4
+Judah Kestrel 2
+Kestrel Larkspur 5
+Larkspur Mornwell 4
+Mornwell Northwick 6
+Northwick Oakshade 3
+Ironford Glen 6
+Judah Farrow 7
+Crest Kestrel 9
+
+# travel_costs_per_location
+Arden 4
+Bram 6
+Crest 3
+Dunwall 7
+Eldham 2
+Farrow 5
+Glen 8
+Holloway 6
+Ironford 4
+Judah 3
+Kestrel 7
+Larkspur 5
+Mornwell 2
+Northwick 8
+Oakshade 6
+
+# travel_energy_budget
+25
