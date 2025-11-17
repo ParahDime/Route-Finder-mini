@@ -1,5 +1,5 @@
 #packages
-
+import os
 #used to verify if the file is read or exit (loop)
 def verifyUse(min, max):
     while True: #will loop infinitely until the condition is met
@@ -15,15 +15,20 @@ def verifyUse(min, max):
             print("Not a valid input. Please try again")
 
 
-def selectFile():
-    pass
+def selectFile(fileSize):
+    labels = {
+        1: "small",
+        2: "medium",
+        3: "large"
+    }
+    return labels.get(fileSize, "invalid") #converts fileSize to a string with the size
 
-def verifyFIle(name):
-    pass
+def verifyFile(name): #verify the file exists
+    return os.path.isfile(name)
 
 
 
-def readFile():
+def readFile(): #read the contents of the file
     a = 1
 
 
@@ -45,12 +50,17 @@ print("0 | Exit")
 if(verifyUse(0, 1) == 1):
     print("Please choose a file type:")
     print("1 | Small\n2 | Medium\n3 | Large\n\n0 | Quit")
-    fileType = verifyUse(0, 3)
-
-    fileName = "map_" + " " + ".txt"
-    verifyFIle(fileName)
-    pass
 else:
     quit()
-#read in files
 
+#read in files
+fileType = verifyUse(0, 3)
+fileType = selectFile(fileType)
+fileName = "map_" + fileType + ".txt"
+if(verifyFile(fileName)):
+    print("File located")
+else:
+    print("File not found")
+    quit()
+
+#read in data
