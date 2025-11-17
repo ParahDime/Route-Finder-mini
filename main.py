@@ -31,7 +31,14 @@ def verifyFile(name): #verify the file exists
 def readFile(): #read the contents of the file
     a = 1
 
-
+def print_menu():
+    print("1 | Show all locations (sorted)")
+    print("2 | Find shortest path between 2 locations")
+    print("3 | Run travel budget estimator")
+    print("4 | Insert a new location")
+    print("5 | Search for a new location")
+    print("6 | Reload dataset")
+    print("7 | Exit")
 
 
 #text menu that calls each module
@@ -64,3 +71,8 @@ else:
     quit()
 
 #read in data
+
+
+
+#main menu
+print_menu()
