@@ -130,7 +130,23 @@ def print_menu():
     print("6 | Reload dataset")
     print("7 | Exit")
 
-
+def handle_menu(option):
+    match option:
+        case 1: #show locations
+            print("a")
+        case 2: #shortest path between 2 locations
+            print("a")
+        case 3: #run travel budget estimation
+            print("a")
+        case 4: #add new location
+            print("a")
+        case 5: #search for new location
+            print("a")
+        case 6: #reload the dataset
+            print("a")
+        case 7: #exit
+            exit()
+        
 #text menu that calls each module
 
 
@@ -166,7 +182,9 @@ else:
 
 readFile(fileName, locations, connections)
 print_menu()
+menuType = verifyUse(1, 7)
 
+handle_menu(menuType)
 #read in data
 
 
