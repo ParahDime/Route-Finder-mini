@@ -2,6 +2,7 @@
 import os
 from bst_directory import BST 
 from graph_explorer import graph_explorer
+import heapq
 #used to verify if the file is read or exit (loop)
 def verifyUse(min, max):
     while True: #will loop infinitely until the condition is met
