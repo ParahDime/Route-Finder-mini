@@ -1,9 +1,10 @@
 #packages
 import os
-from bst_directory import BST 
-from graph_explorer import graph_explorer
-from travel_dp import travel_dp
 import heapq
+from bst_directory import BST 
+from graph_explorer import GraphExplorer
+from travel_dp import travel_dp
+
 #used to verify if the file is read or exit (loop)
 def verifyUse(min, max):
     while True: #will loop infinitely until the condition is met
@@ -134,20 +135,29 @@ def print_menu():
     print("6 | Reload dataset")
     print("7 | Exit")
 
-def handle_menu(option):
+def handle_menu(option, travel, explorer, bst):
     match option:
         case 1: #show locations
-            print("a")
+            build_graph()
         case 2: #shortest path between 2 locations
-            print("a")
+           #build the graph
+           #find shortest path
+           #output shortest path
         case 3: #run travel budget estimation
             print("a")
         case 4: #add new location
-            print("a")
+            name = input("Location name: ")
+            bst.insert(name)
+            explorer.graph[name] = []
+            data_state["modified"] = True
+            #send to function, take info (can be manual)
         case 5: #search for new location
-            print("a")
+            name = input("Location name: ")
+            found = bst.search(name)
+            print("Found" if found else "Not found")
         case 6: #reload the dataset
             print("a")
+            #redo dataset
         case 7: #exit
             exit()
         
@@ -186,6 +196,9 @@ else:
 
 readFile(fileName, locations, connections)
 print_menu()
+graphExplorer = GraphExplorer()
+tripTravel = travel_dp()
+
 menuType = verifyUse(1, 7)
 
 handle_menu(menuType)

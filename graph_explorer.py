@@ -2,7 +2,7 @@ import heapq #used for heap queues
 
 # BFS shortest path
 # #Graph structure
-class graph_explorer:
+class GraphExplorer:
     def init(self):
         self.graph = {}
 

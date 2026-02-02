@@ -46,7 +46,6 @@ class BST:
             return self._search_recursive(root.left, name)
         else:
             return self._search_recursive(root.right, name)
-        pass
 
     #return all names in alphabetical order
     def inorder(self):
