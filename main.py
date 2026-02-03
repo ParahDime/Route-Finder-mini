@@ -13,6 +13,7 @@ def verifyUse(min, max):
             num = int(num)
         except ValueError:
             print("Not a valid value. Please try again")
+            continue
             
         if min <= num and max >= num:
             return num
@@ -31,19 +32,10 @@ def selectFile(fileSize):
 def verifyFile(name): #verify the file exists
     return os.path.isfile(name)
 
-def readFile(filepath, locations, connections):
+def readFile(filepath, data):
     #open the file and read in
     with open(filepath, "r") as f:
         lines = [line.strip() for line in f.readlines()]
-
-    data = {
-        "num_locations": None,
-        "locations": [],
-        "num_connections": None,
-        "connections": [],
-        "travel_costs": {},
-        "energy_budget": None
-    }
 
 
     # helper function embedded
@@ -71,21 +63,21 @@ def readFile(filepath, locations, connections):
             header = line.lower()
 
             if "number_of_locations" in header:
-                count, _, next_i = read_count_and_items(i + 1)
-                data["num_locations"] = count
-                i = next_i
+                data["num_locations"] = int(lines[i + 1])
+                i += 2
                 continue
 
-            elif "locations" in header and "one per line" in header:
-                count, items, next_i = read_count_and_items(i + 1)
-                data["locations"] = items
-                i = next_i
+            elif "available_locations" in header:
+                count = data["num_locations"]
+                #items, next_i = read_count_and_items(i + 1)
+                data["locations"] = lines[i + 1 : i + 1 + count]
+                i = i + 1 + count
                 continue
 
             elif "number_of_connections" in header:
-                count, _, next_i = read_count_and_items(i + 1)
-                data["num_connections"] = count
-                i = next_i
+                #count, _, next_i = read_count_and_items(i + 1)
+                data["num_connections"] = int(lines[i + 1])
+                i += 2
                 continue
 
             elif "connections" in header:
@@ -93,12 +85,15 @@ def readFile(filepath, locations, connections):
                     a, b, d = line.split()
                     return (a, b, int(d))
 
-                count, items, next_i = read_count_and_items(
-                    i + 1,
-                    cast_item=parse_connection
-                )
-                data["connections"] = items
-                i = next_i
+                count = data["num_connections"]
+                connections = []
+
+                for j in range(count):
+                    a, b, d = lines[i + 1 + j].split()
+                    connections.append((a, b, int(d)))
+
+                data["connections"] = connections
+                i = i + 1 + count
                 continue
 
             elif "travel_costs_per_location" in header:
@@ -125,8 +120,8 @@ def readFile(filepath, locations, connections):
 
         i += 1
 
-    locations = data["locations"]
-    connections = data["connections"]
+    #locations = data["locations"]
+    #connections = data["connections"]
 
 def print_menu():
     print("1 | Show all locations (sorted)")
@@ -141,8 +136,9 @@ def handle_menu(option, travel, explorer, bst):
     data_state = False
     match option:
         case 1: #show locations
-            for name in bst.order():
-                print(bst.name)
+            locations = bst.inorder()
+            for location in locations:
+                print(location)
 
         case 2: #shortest path between 2 locations
             start = input("Start location: ")
@@ -188,7 +184,14 @@ def handle_menu(option, travel, explorer, bst):
 locations = []
 connections = []
 
-data = [] #holds location data
+data = {
+        "num_locations": None,
+        "locations": [],
+        "num_connections": None,
+        "connections": [],
+        "travel_costs": {},
+        "energy_budget": None
+    } #holds location data
 
 #ask for type of file read in
 print("Route explorer")
@@ -213,10 +216,17 @@ else:
     quit()
 
 graphExplorer = GraphExplorer()
-tripTravel = travel_dp(0, 15) #needs travel and budget
+tripTravel = travel_dp(data["travel_costs"], data["energy_budget"]) #needs travel and budget
 bst = BST()
+print("initial root ", bst.root)
 
-readFile(fileName, locations, connections)
+readFile(fileName, data)
+
+#populate BST
+for location in data["locations"]:
+    bst.insert(location)
+    print("Inserted:", location, "Root now:", bst.root)
+
 print_menu()
 
 menuType = verifyUse(1, 7)

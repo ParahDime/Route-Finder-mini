@@ -1,7 +1,7 @@
 # number_of_locations
 8
 
-# locations
+# available_locations
 Arden
 Bram
 Crest

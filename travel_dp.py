@@ -1,10 +1,10 @@
 #energy travel calculations (in knapsack)
 class travel_dp:
-    def __init__(self, travel, budget):
-        self.travel_costs = travel
-        self.energy_budget = budget
+    def __init__(self, travel_costs, energy_budget):
+        self.travel_costs = travel_costs
+        self.energy_budget = energy_budget
 
-    def max_visitable_locations(self, costs, budget):
+    def max_visitable_locations(self):
         costs = list(self.travel.values()) #contains path and cost of the path taken
         n = len(costs)
         budget = self.budget #amount available
