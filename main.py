@@ -142,7 +142,14 @@ def handle_menu(option, travel, explorer, bst, data_modified):
         
             case 3: #run travel budget estimation
                 #TOFIX
-                print("Max locations visitable:", travel.max_locations())
+                if not data["travel_costs"] or data["energy_budget"] is None:
+                    print("Travel data not loaded.")
+                    return
+
+                max_locations = travel.max_visitable_locations()
+
+                print(f"With an energy budget of {data['energy_budget']},")
+                print(f"you can visit at most {max_locations} locations.")
             case 4: #add new location
                 #TOFIX
                 bst.insert(name)
