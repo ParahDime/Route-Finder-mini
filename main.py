@@ -40,20 +40,6 @@ def readFile(filepath, data):
 
     # helper function embedded
     #items are returned to og function to be usable variables
-    def read_count_and_items(start_index, cast_item=lambda x: x):
-
-        count = int(lines[start_index])
-        items = []
-
-        for i in range(count):
-            items.append(cast_item(lines[start_index + 1 + i]))
-
-        # Return the next index for further parsing
-        next_index = start_index + 1 + count
-        return count, items, next_index
-
-
-
     i = 0  
     #for each line
     while i < len(lines):
@@ -132,58 +118,58 @@ def print_menu():
     print("6 | Reload dataset")
     print("7 | Exit")
 
-def handle_menu(option, travel, explorer, bst):
-    data_state = False
-    match option:
-        case 1: #show locations
-            locations = bst.inorder()
-            for location in locations:
-                print(location)
+def handle_menu(option, travel, explorer, bst, run):
 
-        case 2: #shortest path between 2 locations
-            start = input("Start location: ")
-            end = input("End location: ")
-           
-            result = explorer.shortest_path(start, end)
-           #output shortest path
-            if result is None:
-                print("No path found.")
-            else:
-                distance, path = result
-                print("Distance:", distance)
-                print("Path:", " -> ".join(path))
-    
-        case 3: #run travel budget estimation
-            print("Max locations visitable:", travel.max_locations())
-        case 4: #add new location
-            name = input("Location name: ")
-            bst.insert(name)
-            explorer.graph[name] = []
-            data_state["modified"] = True
-            #send to function, take info (can be manual)
-        case 5: #search for new location
-            name = input("Location name: ")
-            found = bst.search(name)
-            print("Found" if found else "Not found")
-        case 6: #reload the dataset
-            print("a")
-            #redo dataset
-        case 7: #exit
-            if data_state == False:
-                exit()
-            else: #if data has been modified
-                exit()
+        data_state = False
+        match option:
+            case 1: #show locations
+                locations = bst.inorder()
+                for location in locations:
+                    print(location)
+
+            case 2: #shortest path between 2 locations
+                start = input("Start location: ")
+                end = input("End location: ")
+            
+
+                result = explorer.shortest_path(start, end)
+            #output shortest path
+                if result is None:
+                    print("No path found.")
+                else:
+                    distance, path = result
+                    print("Path:", distance)
+                    print("Distance:", path)
+        
+            case 3: #run travel budget estimation
+                #TOFIX
+                print("Max locations visitable:", travel.max_locations())
+            case 4: #add new location
+                #TOFIX
+                name = input("Location name: ")
+                bst.insert(name)
+                explorer.graph[name] = []
+                data_state["modified"] = True
+                #send to function, take info (can be manual)
+            case 5: #search for new location
+                name = input("Location name: ")
+                found = bst.search(name)
+                print("Found" if found else "Not found")
+            case 6: #reload the dataset
+                #TOFIX
+                print("a")
+                #redo dataset
+            case 7: #exit
+                #TOFIX
+                run = False
+                if data_state == False:
+                    exit()
+                else: #if data has been modified
+                    exit()
 
         
-#text menu that calls each module
-
-
-#focus on output
 
 #initialise variables
-locations = []
-connections = []
-
 data = {
         "num_locations": None,
         "locations": [],
@@ -218,7 +204,6 @@ else:
 graphExplorer = GraphExplorer()
 tripTravel = travel_dp(data["travel_costs"], data["energy_budget"]) #needs travel and budget
 bst = BST()
-print("initial root ", bst.root)
 
 readFile(fileName, data)
 
@@ -227,15 +212,11 @@ for location in data["locations"]:
     bst.insert(location)
     print("Inserted:", location, "Root now:", bst.root)
 
-print_menu()
+#build graph for graphexplorer
+graphExplorer.build_graph(data["locations"], data["connections"])
 
-menuType = verifyUse(1, 7)
-
-handle_menu(menuType, tripTravel, graphExplorer, bst)
-#read in data
-
-
-
-
-#main menu
-print_menu()
+run = True
+while run:
+    print_menu()
+    menuType = verifyUse(1, 7)
+    handle_menu(menuType, tripTravel, graphExplorer, bst, run)
