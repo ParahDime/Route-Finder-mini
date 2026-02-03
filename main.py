@@ -88,7 +88,7 @@ def readFile(filepath, locations, connections):
                 i = next_i
                 continue
 
-            elif "each connection" in header:
+            elif "connections" in header:
                 def parse_connection(line):
                     a, b, d = line.split()
                     return (a, b, int(d))
@@ -106,13 +106,15 @@ def readFile(filepath, locations, connections):
                     loc, cost = line.split()
                     return (loc, int(cost))
 
-                count, items, next_i = read_count_and_items(
-                    i + 1,
-                    cast_item=parse_cost
-                )
+                count = data["num_locations"]
+                items = []
+
+                for offset in range(count):
+                    line = lines[i + 1 + offset]
+                    items.append(parse_cost(line))
                 # Turn list of (loc, cost) into a dict
                 data["travel_costs"] = dict(items)
-                i = next_i
+                i = i + 1 + count
                 continue
 
             elif "travel_energy_budget" in header:
@@ -136,15 +138,27 @@ def print_menu():
     print("7 | Exit")
 
 def handle_menu(option, travel, explorer, bst):
+    data_state = False
     match option:
         case 1: #show locations
-            build_graph()
+            for name in bst.order():
+                print(bst.name)
+
         case 2: #shortest path between 2 locations
-           #build the graph
-           #find shortest path
+            start = input("Start location: ")
+            end = input("End location: ")
+           
+            result = explorer.shortest_path(start, end)
            #output shortest path
+            if result is None:
+                print("No path found.")
+            else:
+                distance, path = result
+                print("Distance:", distance)
+                print("Path:", " -> ".join(path))
+    
         case 3: #run travel budget estimation
-            print("a")
+            print("Max locations visitable:", travel.max_locations())
         case 4: #add new location
             name = input("Location name: ")
             bst.insert(name)
@@ -159,7 +173,11 @@ def handle_menu(option, travel, explorer, bst):
             print("a")
             #redo dataset
         case 7: #exit
-            exit()
+            if data_state == False:
+                exit()
+            else: #if data has been modified
+                exit()
+
         
 #text menu that calls each module
 
@@ -194,14 +212,16 @@ else:
     print("File not found")
     quit()
 
+graphExplorer = GraphExplorer()
+tripTravel = travel_dp(0, 15) #needs travel and budget
+bst = BST()
+
 readFile(fileName, locations, connections)
 print_menu()
-graphExplorer = GraphExplorer()
-tripTravel = travel_dp()
 
 menuType = verifyUse(1, 7)
 
-handle_menu(menuType)
+handle_menu(menuType, tripTravel, graphExplorer, bst)
 #read in data
 
 
