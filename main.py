@@ -118,9 +118,8 @@ def print_menu():
     print("6 | Reload dataset")
     print("7 | Exit")
 
-def handle_menu(option, travel, explorer, bst, run):
+def handle_menu(option, travel, explorer, bst, data_modified):
 
-        data_state = False
         match option:
             case 1: #show locations
                 locations = bst.inorder()
@@ -146,11 +145,57 @@ def handle_menu(option, travel, explorer, bst, run):
                 print("Max locations visitable:", travel.max_locations())
             case 4: #add new location
                 #TOFIX
-                name = input("Location name: ")
                 bst.insert(name)
                 explorer.graph[name] = []
-                data_state["modified"] = True
-                #send to function, take info (can be manual)
+                
+                #Name
+                name = input("Enter new location name: ").strip()
+
+                if name in data["locations"]:
+                    print("Location already exists")
+                    return False
+
+                #Travel amount
+                try:
+                    cost = int(input("Enter travel cost for this location: "))
+                except ValueError:
+                    print("Invalid cost.")
+                    return False
+
+                # Add to data structures
+                data["locations"].append(name)
+                data["travel_costs"][name] = cost
+                data["num_locations"] += 1
+
+                #Insert to BST
+                bst.insert(name)
+
+                #add to the graph
+                graphExplorer.graph[name] = []
+
+                #Add a connection
+                connected = False
+
+                while connected == False:
+                    other = input("Enter existing location name: ").strip()
+
+                    if other not in data["locations"]:
+                        print("That location does not exist. Skipping connection.")
+                    else:
+                        try:
+                            distance = int(input("Enter distance between locations: "))
+                        except ValueError:
+                            print("Invalid distance. Skipping connection.")
+                        else:
+                            data["connections"].append((name, other, distance))
+                            data["num_connections"] += 1
+
+                            graphExplorer.graph[name].append((other, distance))
+                            graphExplorer.graph[other].append((name, distance))
+
+                    connected = True
+                print(f"Location '{name}' added successfully.")
+                data_modified = True
             case 5: #search for new location
                 name = input("Location name: ")
                 found = bst.search(name)
@@ -162,10 +207,10 @@ def handle_menu(option, travel, explorer, bst, run):
             case 7: #exit
                 #TOFIX
                 run = False
-                if data_state == False:
+                if data_modified == False:
                     exit()
                 else: #if data has been modified
-                    exit()
+                    return
 
         
 
@@ -215,8 +260,12 @@ for location in data["locations"]:
 #build graph for graphexplorer
 graphExplorer.build_graph(data["locations"], data["connections"])
 
+data_modified = False
 run = True
 while run:
     print_menu()
     menuType = verifyUse(1, 7)
-    handle_menu(menuType, tripTravel, graphExplorer, bst, run)
+    handle_menu(menuType, tripTravel, graphExplorer, bst, data_modified)
+
+if data_modified == True:
+    pass
