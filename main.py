@@ -114,7 +114,7 @@ def print_menu():
     print("2 | Find shortest path between 2 locations")
     print("3 | Run travel budget estimator")
     print("4 | Insert a new location")
-    print("5 | Search for a new location")
+    print("5 | Search for a location")
     print("6 | Reload dataset")
     print("7 | Exit")
 
@@ -249,7 +249,7 @@ else:
     quit()
 
 graphExplorer = GraphExplorer()
-tripTravel = travel_dp(data["travel_costs"], data["energy_budget"]) #needs travel and budget
+ #needs travel and budget
 bst = BST()
 
 readFile(fileName, data)
@@ -257,10 +257,10 @@ readFile(fileName, data)
 #populate BST
 for location in data["locations"]:
     bst.insert(location)
-    print("Inserted:", location, "Root now:", bst.root)
 
 #build graph for graphexplorer
 graphExplorer.build_graph(data["locations"], data["connections"])
+tripTravel = travel_dp(data["travel_costs"], data["energy_budget"])
 
 data_modified = False
 run = True
