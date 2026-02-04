@@ -21,7 +21,7 @@ Oakshade
 # number_of_connections
 20
 
-# connections (LOCATION1 LOCATION2 DISTANCE)
+# connections
 Arden Bram 3
 Arden Crest 5
 Bram Dunwall 2

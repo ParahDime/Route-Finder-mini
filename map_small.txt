@@ -11,7 +11,7 @@ E
 # number_of_connections
 5
 
-# connections:
+# connections
 A B 2
 A D 4
 B C 3

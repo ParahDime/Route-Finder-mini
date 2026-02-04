@@ -66,13 +66,14 @@ def load_dataset(filename): #reload all the data needed
 
     #create new data containers
     bst = BST()
-    for loc in data["locations"]:
-        bst.insert(loc)
+    #populate BST (used for searching)
+    for location in data["locations"]:
+        bst.insert(location)
 
     graph = GraphExplorer()
     graph.build_graph(data["locations"], data["connections"])
     travel = travel_dp(data["travel_costs"], data["energy_budget"])
-    print("Dataset reloaded successfully.")
+    print("Dataset loaded successfully.")
     return data, bst, graph, travel
 
 def selectFile(fileSize):
@@ -296,21 +297,7 @@ else:
     print("File not found")
     quit()
 
-
 data, bst, graphExplorer, tripTravel = load_dataset(fileName)
-"""graphExplorer = GraphExplorer()
- #needs travel and budget
-bst = BST()
-
-readFile(fileName, data)
-
-#populate BST
-for location in data["locations"]:
-    bst.insert(location)
-
-#build graph for graphexplorer
-graphExplorer.build_graph(data["locations"], data["connections"])
-tripTravel = travel_dp(data["travel_costs"], data["energy_budget"])"""
 
 data_modified = False
 run = True
@@ -320,4 +307,4 @@ while run:
     handle_menu(menuType, tripTravel, graphExplorer, bst, data_modified, data, fileName)
 
 if data_modified == True:
-    pass
+    save_and_exit(fileName, data)
