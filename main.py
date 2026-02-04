@@ -150,14 +150,9 @@ def handle_menu(option, travel, explorer, bst, data_modified):
 
                 print(f"With an energy budget of {data['energy_budget']},")
                 print(f"you can visit at most {max_locations} locations.")
-            case 4: #add new location
-                #TOFIX
-                bst.insert(name)
-                explorer.graph[name] = []
-                
+            case 4: #add new location               
                 #Name
                 name = input("Enter new location name: ").strip()
-
                 if name in data["locations"]:
                     print("Location already exists")
                     return False
@@ -169,7 +164,7 @@ def handle_menu(option, travel, explorer, bst, data_modified):
                     print("Invalid cost.")
                     return False
 
-                # Add to data structures
+                #Add to data
                 data["locations"].append(name)
                 data["travel_costs"][name] = cost
                 data["num_locations"] += 1
@@ -177,12 +172,12 @@ def handle_menu(option, travel, explorer, bst, data_modified):
                 #Insert to BST
                 bst.insert(name)
 
-                #add to the graph
+                #add to graph
                 graphExplorer.graph[name] = []
 
-                #Add a connection
+                
                 connected = False
-
+                #Add a connection
                 while connected == False:
                     other = input("Enter existing location name: ").strip()
 
@@ -203,7 +198,7 @@ def handle_menu(option, travel, explorer, bst, data_modified):
                     connected = True
                 print(f"Location '{name}' added successfully.")
                 data_modified = True
-            case 5: #search for new location
+            case 5: #search for a location
                 name = input("Location name: ")
                 found = bst.search(name)
                 print("Found" if found else "Not found")

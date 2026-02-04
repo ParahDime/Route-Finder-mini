@@ -4,10 +4,10 @@ class travel_dp:
         self.travel_costs = travel_costs
         self.energy_budget = energy_budget
 
-    def max_visitable_locations(self, costs, budget):
+    def max_visitable_locations(self):
         costs = list(self.travel_costs.values()) #contains path and cost of the path taken
         n = len(costs)
-        budget = self.budget #amount available
+        budget = self.energy_budget #amount available
 
         #max locations using first i items with budget b
         dp = [[0] * (budget + 1) for _ in range(n + 1)]
