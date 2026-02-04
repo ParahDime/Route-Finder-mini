@@ -21,6 +21,60 @@ def verifyUse(min, max):
             print("Not a valid input. Please try again")
 
 
+def save_and_exit(filename, data): #if file edited, update
+
+    with open(filename, "w") as f:
+        f.write("# number_of_locations\n")
+        f.write(f"{len(data['locations'])}\n\n")
+
+        f.write("# available_locations\n")
+        for loc in data["locations"]:
+            f.write(f"{loc}\n")
+        f.write("\n")
+
+        f.write("# number_of_connections\n")
+        f.write(f"{len(data['connections'])}\n\n")
+
+        f.write("# connections:\n")
+        for a, b, d in data["connections"]:
+            f.write(f"{a} {b} {d}\n")
+        f.write("\n")
+
+        f.write("# travel_costs_per_location\n")
+        for loc, cost in data["travel_costs"].items():
+            f.write(f"{loc} {cost}\n")
+        f.write("\n")
+
+        f.write("# travel_energy_budget\n")
+        f.write(f"{data['energy_budget']}\n")
+
+    print("Data saved. Exiting program.")
+    exit()
+
+def load_dataset(filename): #reload all the data needed
+    #new dict
+    data = {
+        "num_locations": None,
+        "locations": [],
+        "num_connections": None,
+        "connections": [],
+        "travel_costs": {},
+        "energy_budget": None
+    }
+
+    readFile(filename, data)
+
+    #create new data containers
+    bst = BST()
+    for loc in data["locations"]:
+        bst.insert(loc)
+
+    graph = GraphExplorer()
+    graph.build_graph(data["locations"], data["connections"])
+    travel = travel_dp(data["travel_costs"], data["energy_budget"])
+    print("Dataset reloaded successfully.")
+    return data, bst, graph, travel
+
 def selectFile(fileSize):
     labels = {
         1: "small",
@@ -37,8 +91,6 @@ def readFile(filepath, data):
     with open(filepath, "r") as f:
         lines = [line.strip() for line in f.readlines()]
 
-
-    # helper function embedded
     #items are returned to og function to be usable variables
     i = 0  
     #for each line
@@ -118,7 +170,7 @@ def print_menu():
     print("6 | Reload dataset")
     print("7 | Exit")
 
-def handle_menu(option, travel, explorer, bst, data_modified):
+def handle_menu(option, travel, explorer, bst, data_modified, data, fileName):
 
         match option:
             case 1: #show locations
@@ -141,7 +193,6 @@ def handle_menu(option, travel, explorer, bst, data_modified):
                     print("Distance:", path)
         
             case 3: #run travel budget estimation
-                #TOFIX
                 if not data["travel_costs"] or data["energy_budget"] is None:
                     print("Travel data not loaded.")
                     return
@@ -174,8 +225,7 @@ def handle_menu(option, travel, explorer, bst, data_modified):
 
                 #add to graph
                 graphExplorer.graph[name] = []
-
-                
+            
                 connected = False
                 #Add a connection
                 while connected == False:
@@ -203,9 +253,7 @@ def handle_menu(option, travel, explorer, bst, data_modified):
                 found = bst.search(name)
                 print("Found" if found else "Not found")
             case 6: #reload the dataset
-                #TOFIX
-                print("a")
-                #redo dataset
+                data, bst, explorer, travel = load_dataset(fileName)
             case 7: #exit
                 #TOFIX
                 run = False
@@ -248,7 +296,9 @@ else:
     print("File not found")
     quit()
 
-graphExplorer = GraphExplorer()
+
+data, bst, graphExplorer, tripTravel = load_dataset(fileName)
+"""graphExplorer = GraphExplorer()
  #needs travel and budget
 bst = BST()
 
@@ -260,14 +310,14 @@ for location in data["locations"]:
 
 #build graph for graphexplorer
 graphExplorer.build_graph(data["locations"], data["connections"])
-tripTravel = travel_dp(data["travel_costs"], data["energy_budget"])
+tripTravel = travel_dp(data["travel_costs"], data["energy_budget"])"""
 
 data_modified = False
 run = True
 while run:
     print_menu()
     menuType = verifyUse(1, 7)
-    handle_menu(menuType, tripTravel, graphExplorer, bst, data_modified)
+    handle_menu(menuType, tripTravel, graphExplorer, bst, data_modified, data, fileName)
 
 if data_modified == True:
     pass
