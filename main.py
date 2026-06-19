@@ -1,9 +1,9 @@
 #packages
 import os
 import heapq
-from bst_directory import BST 
-from graph_explorer import GraphExplorer
-from travel_dp import travel_dp
+from python.bst_directory import BST 
+from python.graph_explorer import GraphExplorer
+from python.travel_dp import travel_dp
 
 #used to verify if the file is read or exit (loop)
 def verifyUse(min, max):
@@ -291,20 +291,22 @@ else:
 fileType = verifyUse(0, 3)
 fileType = selectFile(fileType)
 fileName = "map_" + fileType + ".txt"
-if(verifyFile(fileName)):
+
+fullPath = os.path.join('maps', fileName)
+if(verifyFile(fullPath)):
     print("File located")
 else:
     print("File not found")
     quit()
 
-data, bst, graphExplorer, tripTravel = load_dataset(fileName)
+data, bst, graphExplorer, tripTravel = load_dataset(fullPath)
 
 data_modified = False
 run = True
 while run:
     print_menu()
     menuType = verifyUse(1, 7)
-    handle_menu(menuType, tripTravel, graphExplorer, bst, data_modified, data, fileName)
+    handle_menu(menuType, tripTravel, graphExplorer, bst, data_modified, data, fullPath)
 
 if data_modified == True:
     save_and_exit(fileName, data)
